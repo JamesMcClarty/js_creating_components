@@ -73,23 +73,48 @@ const students = [
         score: 95
     }
 ]
-//Create student component
-const createStudentComponent = (name, subject, info, score) => {
-    if (score >= 60){
+
+/*Challenge: Composition of smaller components
+const h1Passing = (studentName) => {
+    return `<h1 class="xx-large passing">${studentName}</h1>`
+}
+
+const h1Failing = (studentName) => {
+    return `<h1 class="xx-large failing">${studentName}</h1>`
+}
+
+const section = (studentSubject) => {
+    return `<section class="bordered dashed section--padded">${studentSubject}</section>`
+}
+
+const article = (studentInfo) => {
+    return `<aside class="pushRight">${studentInfo}</aside>`
+}
+*/
+
+//Challenge: Generic HTML Function
+
+const element = (type, string, cssClass) => {
+    return `<${type} class="${cssClass}">${string}</${type}>`
+}
+
+//Create student component (Refactored)
+const createStudentComponent = (student) => {
+    if (student.score >= 60){
     return `
-        <div class="student">
-            <h1 class="xx-large passing">${name}</h1>
-            <section class="bordered dashed section--padded">${subject}</section>
-            <aside class="pushRight">${info}</aside>
+        <div id="student">
+            ${element("h1", student.name, "xx-large passing")}
+            ${element("section", student.subject, "bordered dashed section--padded")}
+            ${element("aside", student.info, "pushRight")}
         </div>`
     }
 
     else {
         return `
-        <div class="student">
-            <h1 class="xx-large failing">${name}</h1>
-            <section class="bordered dashed section--padded">${subject}</section>
-            <aside class="pushRight">${info}</aside>
+        <div id="student">
+            ${element("h1", student.name, "xx-large failing")}
+            ${element("section", student.subject, "bordered dashed section--padded")}
+            ${element("aside", student.info, "pushRight")}
         </div>` 
     }
 }
@@ -98,10 +123,5 @@ const studentContainer = document.querySelector("#container") // Creating new st
 
 for (let i = 0; i < students.length; i++) {
     const student = students[i]
-    studentContainer.innerHTML += createStudentComponent(
-        student.name,
-        student.subject,
-        student.info,
-        student.score
-    )
+    studentContainer.innerHTML += createStudentComponent(students[i])
 }
